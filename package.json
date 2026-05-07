@@ -1,19 +1,12 @@
 {
   "name": "ranking-kick",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "axios": "^1.16.0",
-    "basic-ftp": "^6.0.1",
-    "fs": "^0.0.1-security",
-    "puppeteer": "^24.42.0"
+    "axios": "^1.6.0"
   }
 }
