@@ -1,14 +1,36 @@
-console.log("🔥 BOT ARRANCÓ OK");
+console.log("🔥 BOT PRO ARRANCADO");
 
-const RANKING_URL = "https://raw.githubusercontent.com/ttomyssj-collab/ranking/refs/heads/main/ranking.json";
+// =====================
+// 1. KEEP ALIVE SERVER
+// =====================
+const http = require("http");
 
+http.createServer((req, res) => {
+  res.write("bot alive");
+  res.end();
+}).listen(process.env.PORT || 3000, () => {
+  console.log("🌐 Keep-alive server activo");
+});
+
+// =====================
+// 2. CONFIG
+// =====================
+const RANKING_URL =
+  "https://raw.githubusercontent.com/ttomyssj-collab/ranking/refs/heads/main/ranking.json";
+
+// =====================
+// 3. FUNCION SEGURA
+// =====================
 async function actualizarRanking() {
   try {
-    console.log("⏳ intentando actualizar ranking...");
+    console.log("⏳ leyendo ranking...");
 
     const res = await fetch(RANKING_URL);
 
-    console.log("📡 status:", res.status);
+    if (!res.ok) {
+      console.log("❌ HTTP ERROR:", res.status);
+      return;
+    }
 
     const data = await res.json();
 
@@ -16,17 +38,29 @@ async function actualizarRanking() {
     console.log(data);
 
   } catch (err) {
-    console.log("❌ ERROR ranking:", err.message);
+    console.log("❌ ERROR controlado:", err.message);
   }
 }
 
-// ejecutar al inicio
-actualizarRanking();
+// =====================
+// 4. LOOP ESTABLE
+// =====================
+function startLoop() {
+  actualizarRanking().catch(() => {});
 
-// repetir cada 60s
-setInterval(actualizarRanking, 60000);
+  setInterval(() => {
+    actualizarRanking().catch(err =>
+      console.log("❌ loop error evitado:", err.message)
+    );
+  }, 60000);
+}
 
-// keep alive
+// =====================
+// 5. KEEP ALIVE LOG
+// =====================
 setInterval(() => {
   console.log("⏱️ BOT VIVO");
 }, 30000);
+
+// START
+startLoop();
