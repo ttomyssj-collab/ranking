@@ -1,7 +1,5 @@
 console.log("🔥 BOT ARRANCÓ OK");
 
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
 const RANKING_URL = "https://raw.githubusercontent.com/ttomyssj-collab/ranking/refs/heads/main/ranking.json";
 
 async function actualizarRanking() {
@@ -10,7 +8,7 @@ async function actualizarRanking() {
 
     const res = await fetch(RANKING_URL);
 
-    console.log("📡 respuesta recibida:", res.status);
+    console.log("📡 status:", res.status);
 
     const data = await res.json();
 
@@ -18,14 +16,17 @@ async function actualizarRanking() {
     console.log(data);
 
   } catch (err) {
-    console.log("❌ Error actualizando ranking:", err.message);
+    console.log("❌ ERROR ranking:", err.message);
   }
 }
 
+// ejecutar al inicio
 actualizarRanking();
 
+// repetir cada 60s
 setInterval(actualizarRanking, 60000);
 
+// keep alive
 setInterval(() => {
   console.log("⏱️ BOT VIVO");
 }, 30000);
